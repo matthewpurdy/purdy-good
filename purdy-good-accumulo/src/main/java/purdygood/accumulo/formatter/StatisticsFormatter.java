@@ -94,7 +94,7 @@ public class StatisticsFormatter extends TableFormatter {
                        new Text(extractValue(keyPair[2])), new Text(extractValue(keyPair[3])));
     Value aValue = new Value(value.toString().getBytes());
     
-      return super.formatEntry(aKey, aValue);
+    return super.formatEntry(aKey, aValue);
     
     //return "keyPart.size => " + keyPart.length + "| key => " + key + " | value => " + value;
     

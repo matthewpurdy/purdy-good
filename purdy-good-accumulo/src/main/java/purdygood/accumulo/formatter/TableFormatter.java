@@ -116,7 +116,7 @@ public class TableFormatter implements Formatter {
     
     // append timestamp
     if(showTimestamps) {
-    	appendString(ret, pad(ts, tsPad)).append("|");
+      appendString(ret, pad(ts, tsPad)).append("|");
     }
     
     // append value
@@ -125,7 +125,7 @@ public class TableFormatter implements Formatter {
       appendString(ret, "|");
     }
     else {
-    	appendString(ret, createPad(" ", valPad)).append("|");
+      appendString(ret, createPad(" ", valPad)).append("|");
     }
     
     return ret.toString();
