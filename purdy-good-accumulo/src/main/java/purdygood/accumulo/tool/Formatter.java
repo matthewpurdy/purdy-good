@@ -92,7 +92,7 @@ protected boolean doTimestamps;
     appendString(ret, pad(cq, cqPad)).append("|");
     
     // append visibility expression
-    appendString(ret, pad(cv, cqPad)).append("|");
+    appendString(ret, pad(cv, cvPad)).append("|");
     
     // append timestamp
     if(showTimestamps) {
@@ -182,12 +182,15 @@ protected boolean doTimestamps;
   protected StringBuilder appendBytes(StringBuilder sb, byte ba[], int offset, int len) {
     for(int i = 0; i < len; i++) {
       int c = 0xff & ba[offset + i];
-      if (c == '\\')
+      if(c == '\\') {
         sb.append("\\\\");
-      else if (c >= 32 && c <= 126)
+      }
+      else if(c >= 32 && c <= 126) {
         sb.append((char) c);
-      else
+      }
+      else {
         sb.append("\\x").append(String.format("%02X", c));
+      }
     }
     return sb;
   }
@@ -200,12 +203,15 @@ protected boolean doTimestamps;
     StringBuilder ret = new StringBuilder(len);
     for(int i = 0; i < len; i++) {
       int c = 0xff & ba[offset + i];
-      if (c == '\\')
+      if(c == '\\') {
         ret.append("\\\\");
-      else if (c >= 32 && c <= 126)
+      }
+      else if(c >= 32 && c <= 126) {
         ret.append((char) c);
-      else
+      }
+      else {
         ret.append("\\x").append(String.format("%02X", c));
+      }
     }
     return ret.toString();
   }

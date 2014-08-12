@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -31,6 +32,8 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.Parser;
 import org.apache.commons.cli.PosixParser;
 import org.apache.log4j.Logger;
+
+import com.google.common.primitives.Longs;
 
 public class ScanTool {
   
@@ -103,11 +106,11 @@ public class ScanTool {
   
   public static Options buildOptions() {
     Options ret = new Options();
-    ret.addOption(prop_CONFIGURATION_FILE, prop_CONFIGURATION_FILE_LONG,   true, "properties file holding all the args");
-    ret.addOption(prop_ACCUMULO_INSTANCE, prop_ACCUMULO_INSTANCE_LONG,     true, "accumulo instance name");
+    ret.addOption(prop_CONFIGURATION_FILE,  prop_CONFIGURATION_FILE_LONG,  true, "properties file holding all the args");
+    ret.addOption(prop_ACCUMULO_INSTANCE,   prop_ACCUMULO_INSTANCE_LONG,   true, "accumulo instance name");
     ret.addOption(prop_ACCUMULO_ZOOKEEPERS, prop_ACCUMULO_ZOOKEEPERS_LONG, true, "accumulo zookeepers");
-    ret.addOption(prop_ACCUMULO_USERNAME, prop_ACCUMULO_USERNAME_LONG,     true, "accumulo username");
-    ret.addOption(prop_ACCUMULO_PASSWORD, prop_ACCUMULO_PASSWORD_LONG,     true, "accumulo password");
+    ret.addOption(prop_ACCUMULO_USERNAME,   prop_ACCUMULO_USERNAME_LONG,   true, "accumulo username");
+    ret.addOption(prop_ACCUMULO_PASSWORD,   prop_ACCUMULO_PASSWORD_LONG,   true, "accumulo password");
     
     return ret;
   }
@@ -250,10 +253,14 @@ public class ScanTool {
   protected static String doWorkCount(Map<String, String> parseFields) throws TableNotFoundException {
     StringBuilder ret = new StringBuilder(1024);
     
-    String table = parseFields.get(command_FIELD_TABLE);
-    String row   = parseFields.get(command_FIELD_ROW);
-    String cf    = parseFields.get(command_FIELD_CF);
-    String cq    = parseFields.get(command_FIELD_CQ);
+    String table      = parseFields.get(command_FIELD_TABLE);
+    String row        = parseFields.get(command_FIELD_ROW);
+    String cf         = parseFields.get(command_FIELD_CF);
+    String cq         = parseFields.get(command_FIELD_CQ);
+    String sThreshold = parseFields.get(command_FIELD_THRESHOLD);
+    long threshold    = 0;
+    
+    try { threshold = Long.parseLong(sThreshold); } catch(Exception e) {}
     
     StatsData statsData         = new StatsData();
     Scanner scanner             = connector.createScanner(table, userAuths);
@@ -266,43 +273,63 @@ public class ScanTool {
     
     formatter.reset();
     for(Entry<Key, Value> entry: statsData.ROWs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.ROW_COLFAMs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.ROW_COLFAM_COLQUALs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.ROW_COLFAM_COLQUAL_COLVISs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.COLFAMs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.COLFAM_COLQUALs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.COLFAM_COLQUAL_COLVISs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.COLQUALs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.COLQUAL_COLVISs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     for(Entry<Key, Value> entry: statsData.COLVISs.entrySet()) {
-      ret.append(formatter.formatEntry(entry)).append("\n");
+      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+        ret.append(formatter.formatEntry(entry)).append("\n");
+      }
     }
     
     return ret.toString();
