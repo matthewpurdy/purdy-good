@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.math.BigInteger;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -32,8 +31,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.Parser;
 import org.apache.commons.cli.PosixParser;
 import org.apache.log4j.Logger;
-
-import com.google.common.primitives.Longs;
 
 public class ScanTool {
   
@@ -273,61 +270,61 @@ public class ScanTool {
     
     formatter.reset();
     for(Entry<Key, Value> entry: statsData.ROWs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.ROW_COLFAMs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.ROW_COLFAM_COLQUALs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.ROW_COLFAM_COLQUAL_COLVISs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.COLFAMs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.COLFAM_COLQUALs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.COLFAM_COLQUAL_COLVISs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.COLQUALs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.COLQUAL_COLVISs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
     
     for(Entry<Key, Value> entry: statsData.COLVISs.entrySet()) {
-      if(Longs.fromByteArray(entry.getValue().get()) > threshold) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
         ret.append(formatter.formatEntry(entry)).append("\n");
       }
     }
