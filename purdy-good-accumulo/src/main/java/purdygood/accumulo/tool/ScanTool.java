@@ -204,7 +204,7 @@ public class ScanTool {
     return ret;
   }
   
-  protected static String doWork(String line) throws TableNotFoundException {
+  protected static String doWork(String line) {
     StringBuilder ret = new StringBuilder(128);
     Map<String, Map<String, String>> parseLine = parseLine(line);
     for(String command: parseLine.keySet()) {
@@ -213,9 +213,10 @@ public class ScanTool {
     return ret.toString();
   }
   
-  protected static String doWork(String command, Map<String, String> parseFields) throws TableNotFoundException {
+  protected static String doWork(String command, Map<String, String> parseFields) {
     StringBuilder ret = new StringBuilder(128);
     
+    try {
     if(command.equalsIgnoreCase(command_HELP)) {
       ret.append(doWorkHelp(parseFields));
     }
@@ -234,6 +235,10 @@ public class ScanTool {
         ret.append(", ").append(entry.getKey());
         ret.append(" => |").append(entry.getValue()).append("|");
       }
+    }
+    }
+    catch(TableNotFoundException e) {
+      ret.append("bad table name => ").append(e.getMessage());
     }
     
     return ret.toString();
