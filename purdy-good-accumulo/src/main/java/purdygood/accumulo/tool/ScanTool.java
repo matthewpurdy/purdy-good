@@ -49,19 +49,22 @@ public class ScanTool {
   protected static final String command_COUNT                 = "count";
   protected static final String command_EXIT                  = "exit";
   protected static final String command_HELP                  = "help";
+  protected static final String command_HISTORY               = "history";
   protected static final String command_QUIT                  = "quit";
   protected static final String command_SCAN                  = "scan";
   protected static final String command_FIELD_ROW             = "row";
   protected static final String command_FIELD_CF              = "cf";
   protected static final String command_FIELD_CQ              = "cq";
+  protected static final String command_FIELD_LINE            = "line";
   protected static final String command_FIELD_TABLE           = "table";
   protected static final String command_FIELD_THRESHOLD       = "threshold";
   //protected static final String command_FIELD_OUTPUT          = "output";
   
-  protected static Logger log               = Logger.getLogger(ScanTool.class);
-  protected static Connector connector      = null;
-  protected static Authorizations userAuths = null;
-  protected static Formatter formatter      = null;
+  protected static Logger log                   = Logger.getLogger(ScanTool.class);
+  protected static Connector connector          = null;
+  protected static Authorizations userAuths     = null;
+  protected static Formatter formatter          = null;
+  protected static Map<Integer, String> history = null;
   
   protected static Map<String, String> parseArgs(String[] args) throws FileNotFoundException, ParseException, IOException {
     Options options         = buildOptions();
@@ -121,6 +124,7 @@ public class ScanTool {
     connector         = instance.getConnector(properties.get(prop_ACCUMULO_USERNAME_LONG), properties.get(prop_ACCUMULO_PASSWORD_LONG).getBytes());
     userAuths         = connector.securityOperations().getUserAuthorizations(properties.get(prop_ACCUMULO_USERNAME_LONG));
     formatter         = new Formatter();
+    history           = new TreeMap<Integer, String>();
   }
   
   protected static String prompt() {
@@ -131,20 +135,20 @@ public class ScanTool {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     
+    int lineCount = 0;
     Map<String, Map<String, String>> parseLine = null;
     String line = null;
     for(;;) {
       writer.write(prompt());writer.flush();
       
-      line      = reader.readLine();
+      line = reader.readLine();
+      history.put(++lineCount, line.trim());
       parseLine = parseLine(line);
       if(isExitCommand(getCommand(parseLine))) {
         break;
       }
       else {
-        for(String command: parseLine.keySet()) {
-          writer.write(doWork(command, parseLine.get(command)));writer.flush();
-        }
+        writer.write(doWork(line));writer.flush();
       }
       
     }
@@ -200,6 +204,15 @@ public class ScanTool {
     return ret;
   }
   
+  protected static String doWork(String line) throws TableNotFoundException {
+    StringBuilder ret = new StringBuilder(128);
+    Map<String, Map<String, String>> parseLine = parseLine(line);
+    for(String command: parseLine.keySet()) {
+      ret.append(doWork(command, parseLine.get(command)));
+    }
+    return ret.toString();
+  }
+  
   protected static String doWork(String command, Map<String, String> parseFields) throws TableNotFoundException {
     StringBuilder ret = new StringBuilder(128);
     
@@ -211,6 +224,9 @@ public class ScanTool {
     }
     else if(command.equalsIgnoreCase(command_COUNT)) {
       ret.append(doWorkCount(parseFields));
+    }
+    else if(command.equalsIgnoreCase(command_HISTORY)) {
+      ret.append(doWorkHistory(parseFields));
     }
     else {
       ret.append("command => |").append(command).append("|");
@@ -225,6 +241,31 @@ public class ScanTool {
   
   protected static String doWorkHelp(Map<String, String> parseFields) {
     return help();
+  }
+  
+  protected static String doWorkHistory(Map<String, String> parseFields) throws TableNotFoundException {
+    StringBuilder ret = new StringBuilder(1024);
+    if(parseFields.size() == 1) {
+      for(Entry<Integer, String> line: history.entrySet()) {
+        ret.append(line.getKey()).append(" => ").append(line.getValue()).append("\n");
+      }
+    }
+    else {
+      String lineDex = parseFields.get(command_FIELD_LINE);
+      if(lineDex != null) {
+        int dex = Integer.parseInt(lineDex);
+        if(dex < 0) {
+          dex = history.size() + dex;
+        }
+        if(dex == 0 || dex > (history.size() - 1)) {
+          dex = 1;
+        }
+        history.put(history.size(), history.get(dex));
+        ret.append(doWork(history.get(dex)));
+      }
+    }
+    
+    return ret.toString();
   }
   
   protected static String doWorkScan(Map<String, String> parseFields) throws TableNotFoundException {
@@ -243,6 +284,8 @@ public class ScanTool {
     for(Entry<Key, Value> entry: scanner) {
       ret.append(formatter.formatEntry(entry)).append("\n");
     }
+    scanner.clearScanIterators();
+    scanner.clearColumns();
     
     return ret.toString();
   }
@@ -280,6 +323,9 @@ public class ScanTool {
     appendResults(statsData.COLQUAL_COLVISs, ret, threshold);
     appendResults(statsData.COLVISs, ret, threshold);
     appendResults(statsData.ROWs, ret, threshold);
+    
+    scanner.clearScanIterators();
+    scanner.clearColumns();
     
     return ret.toString();
   }
