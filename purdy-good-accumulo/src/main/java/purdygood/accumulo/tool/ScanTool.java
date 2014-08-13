@@ -20,6 +20,7 @@ import org.apache.accumulo.core.client.IteratorSetting;
 import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
+import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.iterators.user.RegExFilter;
@@ -52,6 +53,7 @@ public class ScanTool {
   protected static final String command_HISTORY               = "history";
   protected static final String command_QUIT                  = "quit";
   protected static final String command_SCAN                  = "scan";
+  protected static final String command_TABLES                = "tables";
   protected static final String command_FIELD_ROW             = "row";
   protected static final String command_FIELD_CF              = "cf";
   protected static final String command_FIELD_CQ              = "cq";
@@ -63,6 +65,7 @@ public class ScanTool {
   protected static Logger log                   = Logger.getLogger(ScanTool.class);
   protected static Connector connector          = null;
   protected static Authorizations userAuths     = null;
+  protected static TableOperations tableOps     = null;
   protected static Formatter formatter          = null;
   protected static Map<Integer, String> history = null;
   
@@ -123,6 +126,7 @@ public class ScanTool {
     Instance instance = new ZooKeeperInstance(properties.get(prop_ACCUMULO_INSTANCE_LONG), properties.get(prop_ACCUMULO_ZOOKEEPERS_LONG));
     connector         = instance.getConnector(properties.get(prop_ACCUMULO_USERNAME_LONG), properties.get(prop_ACCUMULO_PASSWORD_LONG).getBytes());
     userAuths         = connector.securityOperations().getUserAuthorizations(properties.get(prop_ACCUMULO_USERNAME_LONG));
+    tableOps          = connector.tableOperations();
     formatter         = new Formatter();
     history           = new TreeMap<Integer, String>();
   }
@@ -229,6 +233,9 @@ public class ScanTool {
     else if(command.equalsIgnoreCase(command_HISTORY)) {
       ret.append(doWorkHistory(parseFields));
     }
+    else if(command.equalsIgnoreCase(command_TABLES)) {
+      ret.append(doWorkTable(parseFields));
+    }
     else {
       ret.append("command => |").append(command).append("|");
       for(Entry<String, String> entry: parseFields.entrySet()) {
@@ -246,6 +253,15 @@ public class ScanTool {
   
   protected static String doWorkHelp(Map<String, String> parseFields) {
     return help();
+  }
+  
+  protected static String doWorkTable(Map<String, String> parseFields) throws TableNotFoundException {
+    StringBuilder ret = new StringBuilder(1024);
+    Map<String, String > tables = tableOps.tableIdMap();
+    for(String table: tables.keySet()) {
+      ret.append(table).append("\n");
+    }
+    return ret.toString();
   }
   
   protected static String doWorkHistory(Map<String, String> parseFields) throws TableNotFoundException {
