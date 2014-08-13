@@ -269,65 +269,17 @@ public class ScanTool {
     }
     
     formatter.reset();
-    for(Entry<Key, Value> entry: statsData.ROWs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.ROW_COLFAMs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.ROW_COLFAM_COLQUALs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.ROW_COLFAM_COLQUAL_COLVISs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.COLFAMs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.COLFAM_COLQUALs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.COLFAM_COLQUAL_COLVISs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.COLQUALs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.COLQUAL_COLVISs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
-    
-    for(Entry<Key, Value> entry: statsData.COLVISs.entrySet()) {
-      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
-        ret.append(formatter.formatEntry(entry)).append("\n");
-      }
-    }
+    appendResults(statsData.ROWs, ret, threshold);
+    appendResults(statsData.ROW_COLFAMs, ret, threshold);
+    appendResults(statsData.ROW_COLFAM_COLQUALs, ret, threshold);
+    appendResults(statsData.ROW_COLFAM_COLQUAL_COLVISs, ret, threshold);
+    appendResults(statsData.COLFAMs, ret, threshold);
+    appendResults(statsData.COLFAM_COLQUALs, ret, threshold);
+    appendResults(statsData.COLFAM_COLQUAL_COLVISs, ret, threshold);
+    appendResults(statsData.COLQUALs, ret, threshold);
+    appendResults(statsData.COLQUAL_COLVISs, ret, threshold);
+    appendResults(statsData.COLVISs, ret, threshold);
+    appendResults(statsData.ROWs, ret, threshold);
     
     return ret.toString();
   }
@@ -368,6 +320,14 @@ public class ScanTool {
     }
   }
   
+  protected static void appendResults(Map<Key, Value> map, StringBuilder sb, long threshold) {
+    for(Entry<Key, Value> entry: map.entrySet()) {
+      if(Long.parseLong(entry.getValue().toString()) >= threshold) {
+        sb.append(formatter.formatEntry(entry)).append("\n");
+      }
+    }
+  }
+  
   protected static String help() {
     StringBuilder ret = new StringBuilder(1024);
     
@@ -387,7 +347,7 @@ public class ScanTool {
     ret.append("         row       => a comma seperated list of row regex filters\n");
     ret.append("         cf        => a comma seperated list of column family regex filters\n");
     ret.append("         cq        => a comma seperated list of column qualifer regex filters\n");
-    ret.append("         threshold => a comma seperated list of column qualifer regex filters\n");
+    ret.append("         threshold => the minimum count of a key before it is returned to the console\n");
     ret.append("\n");
     ret.append("#####\n");
     ret.append("\n");
