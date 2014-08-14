@@ -278,7 +278,7 @@ public class ScanTool {
         if(dex < 0) {
           dex = history.size() + dex;
         }
-        if(dex == 0 || dex > (history.size() - 1)) {
+        if(dex == 0 || dex > history.size()) {
           dex = 1;
         }
         history.put(history.size(), history.get(dex));
@@ -343,7 +343,6 @@ public class ScanTool {
     appendResults(statsData.COLQUALs, ret, threshold);
     appendResults(statsData.COLQUAL_COLVISs, ret, threshold);
     appendResults(statsData.COLVISs, ret, threshold);
-    appendResults(statsData.ROWs, ret, threshold);
     
     scanner.clearScanIterators();
     scanner.clearColumns();
@@ -417,7 +416,7 @@ public class ScanTool {
     ret.append("            cf        => a comma seperated list of column family regex filters\n");
     ret.append("            cq        => a comma seperated list of column qualifer regex filters\n");
     ret.append("            threshold => the minimum count of a key before it is returned to the console\n");
-    ret.append("tables  =>  queries accumulo for a list of tables accumulo tables\n");
+    ret.append("tables  =>  queries accumulo for a list of tables\n");
     ret.append("\n");
     ret.append("#####\n");
     ret.append("\n");

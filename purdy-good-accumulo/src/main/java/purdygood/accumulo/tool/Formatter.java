@@ -53,27 +53,27 @@ protected boolean doTimestamps;
     String ts  = Long.toString(currentKey.getTimestamp());
     String val = value.toString();
     
-    if(rowPad < row.length()) {
+    if(rowPad <= row.length()) {
       rowPad = row.length() + 2;
       padChange = true;
     }
-    if(cfPad < cf.length()) {
+    if(cfPad <= cf.length()) {
       cfPad = cf.length() + 2;
       padChange = true;
     }
-    if(cqPad < cq.length()) {
+    if(cqPad <= cq.length()) {
       cqPad = cq.length() + 2;
       padChange = true;
     }
-    if(cvPad < cv.length()) {
+    if(cvPad <= cv.length()) {
       cvPad = cv.length() + 2;
       padChange = true;
     }
-    if(tsPad < ts.length()) {
+    if(tsPad <= ts.length()) {
       tsPad = ts.length() + 2;
       padChange = true;
     }
-    if(valPad < val.length()) {
+    if(valPad <= val.length()) {
         valPad = val.length() + 2;
         padChange = true;
     }
