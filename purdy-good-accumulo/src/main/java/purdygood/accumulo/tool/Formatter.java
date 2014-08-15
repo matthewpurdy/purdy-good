@@ -7,25 +7,52 @@ import org.apache.accumulo.core.data.Value;
 import org.apache.hadoop.io.Text;
 
 public class Formatter {
-protected boolean doTimestamps;
   
-  protected int rowPad = 20;
-  protected int cfPad  = 20;
-  protected int cqPad  = 20;
-  protected int cvPad  = 20;
-  protected int tsPad  = 20;
-  protected int valPad = 20;
+  public static final int keyMask_CV           =  1;
+  public static final int keyMask_CQ           =  2;
+  public static final int keyMask_CQ_CV        =  3;
+  public static final int keyMask_CF           =  4;
+  public static final int keyMask_CF_CV        =  5;
+  public static final int keyMask_CF_CQ        =  6;
+  public static final int keyMask_CF_CQ_CV     =  7;
+  public static final int keyMask_ROW          =  8;
+  public static final int keyMask_ROW_CV       =  9;
+  public static final int keyMask_ROW_CQ       = 10;
+  public static final int keyMask_ROW_CQ_CV    = 11;
+  public static final int keyMask_ROW_CF       = 12;
+  public static final int keyMask_ROW_CF_CV    = 13;
+  public static final int keyMask_ROW_CF_CQ    = 14;
+  public static final int keyMask_ROW_CF_CQ_CV = 15;
   
-  protected boolean padChange = true;
+  protected boolean doTimestamps = false;
+  protected boolean padChange    = true;
+  protected int keyMask          = keyMask_ROW;
+  protected int rowPad           = 20;
+  protected int cfPad            = 20;
+  protected int cqPad            = 20;
+  protected int cvPad            = 20;
+  protected int tsPad            = 20;
+  protected int valPad           = 20;
+  
+  public Formatter() {
+	  reset();
+  }
+  
+  public Formatter(int keyMask) {
+	  reset();
+	  this.keyMask = keyMask;
+  }
   
   public Formatter reset() {
-    rowPad    = 20;
-    cfPad     = 20;
-    cqPad     = 20;
-    cvPad     = 20;
-    tsPad     = 20;
-    valPad    = 20;
-    padChange = true;
+    rowPad       = 20;
+    cfPad        = 20;
+    cqPad        = 20;
+    cvPad        = 20;
+    tsPad        = 20;
+    valPad       = 20;
+    keyMask      = keyMask_ROW;
+    padChange    = true;
+    doTimestamps = false;
     
     return this;
   }
