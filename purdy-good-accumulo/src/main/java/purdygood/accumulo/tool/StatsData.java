@@ -14,7 +14,7 @@ public class StatsData {
   protected Map<Key, Value> COLFAMs                    = new TreeMap<Key, Value>();
   protected Map<Key, Value> COLFAM_COLQUALs            = new TreeMap<Key, Value>();
   protected Map<Key, Value> COLFAM_COLQUAL_COLVISs     = new TreeMap<Key, Value>();
-  protected Map<Key, Value> COLQUALs                   = new TreeMap<Key, Value>();;
+  protected Map<Key, Value> COLQUALs                   = new TreeMap<Key, Value>();
   protected Map<Key, Value> COLQUAL_COLVISs            = new TreeMap<Key, Value>();
   protected Map<Key, Value> COLVISs                    = new TreeMap<Key, Value>();
   
@@ -30,7 +30,7 @@ public class StatsData {
     incrementCount(createKey(row, cf, cq, cv), ROW_COLFAM_COLQUAL_COLVISs);
     incrementCount(createKey("", cf, "", ""),  COLFAMs);
     incrementCount(createKey("", cf, cq, ""),  COLFAM_COLQUALs);
-    incrementCount(createKey("", cf, cq, ""),  COLFAM_COLQUAL_COLVISs);
+    incrementCount(createKey("", cf, cq, cv),  COLFAM_COLQUAL_COLVISs);
     incrementCount(createKey("", "", cq, ""),  COLQUALs);
     incrementCount(createKey("", "", cq, cv),  COLQUAL_COLVISs);
     incrementCount(createKey("", "", "", cv),  COLVISs);
