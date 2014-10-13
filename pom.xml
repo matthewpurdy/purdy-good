@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>purdy-good</groupId>
@@ -12,14 +12,21 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <hadoop.version>2.0.0-cdh4.7.0</hadoop.version>
-    <hadoop.mr1.version>2.0.0-mr1-cdh4.7.0</hadoop.mr1.version>
+    <!--<hadoop.version>2.0.0-cdh4.7.0</hadoop.version> -->
+    <hadoop.version>2.3.0-cdh5.1.0</hadoop.version>
+    <!--<hadoop.mr.version>2.0.0-mr1-cdh4.7.0</hadoop.mr.version> -->
+    <hadoop.mr.version>2.3.0-cdh5.1.0</hadoop.mr.version> 
     <zookeeper.version>3.4.5</zookeeper.version>
-    <accumulo.version>1.4.4-cdh4.5.0</accumulo.version>
+    <!--<accumulo.version>1.4.4-cdh4.5.0</accumulo.version> -->
+    <accumulo.version>1.6.0-cdh5.1.0</accumulo.version>
+    <scala.version>2.10.3</scala.version>
+    <spark.library>spark-core_2.10</spark.library>
+    <spark.version>1.0.0</spark.version>
   </properties>
     
   <modules>
     <module>purdy-good-accumulo</module>
+    <module>purdy-good-spark</module>
   </modules>
     
   <repositories>
@@ -56,7 +63,7 @@
       <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-client</artifactId>
-        <version>${hadoop.mr1.version}</version>
+        <version>${hadoop.mr.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.zookeeper</groupId>
@@ -72,6 +79,16 @@
         <groupId>org.apache.accumulo</groupId>
         <artifactId>accumulo-server</artifactId>
         <version>${accumulo.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>${spark.library}</artifactId>
+        <version>${spark.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -162,4 +179,3 @@
   </build>
   
 </project>
-
