@@ -6,7 +6,7 @@
 **/eclipse-classes
 **/*.class
 **/dependency-reduced-pom.xml
-
+**/.cache
 *.classpath
 *.project
 *.settings
