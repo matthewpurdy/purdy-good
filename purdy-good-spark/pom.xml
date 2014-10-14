@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>purdy-good</groupId>
+    <artifactId>purdy-good-parent</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <groupId>purdy-good-spark</groupId>
+  <artifactId>purdy-good-spark</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <name>purdy-good-spark</name>
+  <url>http://maven.apache.org</url>
+  
+  <modules>
+    <module>purdy-good-spark-mapreduce</module>
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.accumulo</groupId>
+      <artifactId>accumulo-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>${spark.library}</artifactId>
+    </dependency>
+  </dependencies>
+</project>
