@@ -112,7 +112,7 @@ public class TableFormatter implements Formatter {
     appendString(ret, pad(cq, cqPad)).append("|");
     
     // append visibility expression
-    appendString(ret, pad(cv, cqPad)).append("|");
+    appendString(ret, pad(cv, cvPad)).append("|");
     
     // append timestamp
     if(showTimestamps) {
