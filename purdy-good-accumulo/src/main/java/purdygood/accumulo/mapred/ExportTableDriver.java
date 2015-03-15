@@ -47,26 +47,26 @@ public class ExportTableDriver extends Configured implements Tool {
 		options.addOption(outputPathOpt);
 		
 		Parser p = new BasicParser();
-	    
-	    CommandLine commandLine = p.parse(options, args);
-	    
-	    String instanceName = commandLine.getOptionValue(instanceNameOpt.getOpt());
+		
+		CommandLine commandLine = p.parse(options, args);
+		
+		String instanceName = commandLine.getOptionValue(instanceNameOpt.getOpt());
 		String zookeepers   = commandLine.getOptionValue(zookeepersOpt.getOpt());
-	    String username     = commandLine.getOptionValue(usernameOpt.getOpt());
-	    String password     = commandLine.getOptionValue(passwordOpt.getOpt());
-	    String tableName    = commandLine.getOptionValue(inputTableNameOpt.getOpt());
+		String username     = commandLine.getOptionValue(usernameOpt.getOpt());
+		String password     = commandLine.getOptionValue(passwordOpt.getOpt());
+		String tableName    = commandLine.getOptionValue(inputTableNameOpt.getOpt());
 		String outputPath   = commandLine.getOptionValue(outputPathOpt.getOpt());
-	    
-	    if(instanceName == null || zookeepers == null || tableName == null || outputPath == null  || username == null || password == null) {
-	    	throw new Exception(usage());
-	    }
-	    
-	    Authorizations authorizations = new Authorizations("public");
+		
+		if(instanceName == null || zookeepers == null || tableName == null || outputPath == null  || username == null || password == null) {
+			throw new Exception(usage());
+		}
+		
+		Authorizations authorizations = new Authorizations("public");
 		//1.4.4 => Job job = new Job(getConf(), this.getClass().getSimpleName() + "_" + System.currentTimeMillis());
 		Job job = new Job(getConf());
 		job.setJobName(this.getClass().getSimpleName() + "_" + System.currentTimeMillis());
-	    job.setJarByClass(this.getClass());
-	    job.setInputFormatClass(AccumuloInputFormat.class);
+		job.setJarByClass(this.getClass());
+		job.setInputFormatClass(AccumuloInputFormat.class);
 		
 		//1.4.4 => AccumuloInputFormat.setZooKeeperInstance(job, instanceName, zookeepers);
 		AccumuloInputFormat.setZooKeeperInstance(job, ClientConfiguration.loadDefault().withInstance(instanceName).withZkHosts(zookeepers));
