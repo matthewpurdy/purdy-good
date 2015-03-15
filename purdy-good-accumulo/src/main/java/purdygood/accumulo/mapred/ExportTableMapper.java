@@ -15,7 +15,7 @@ public class ExportTableMapper extends Mapper<Key, Value, NullWritable, Text> {
 	private Text text                    = new Text();
 	
 	@Override
-    public void map(Key key, Value value, Context context) throws IOException, InterruptedException {
+	public void map(Key key, Value value, Context context) throws IOException, InterruptedException {
 		keyValueString.append(key.getRow()).append(",");
 		keyValueString.append(key.getColumnFamily()).append(",");
 		keyValueString.append(key.getColumnQualifier()).append(",");
