@@ -12,16 +12,17 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <!--<hadoop.version>2.0.0-cdh4.7.0</hadoop.version> -->
-    <hadoop.version>2.3.0-cdh5.1.0</hadoop.version>
-    <!--<hadoop.mr.version>2.0.0-mr1-cdh4.7.0</hadoop.mr.version> -->
-    <hadoop.mr.version>2.3.0-cdh5.1.0</hadoop.mr.version> 
+    <!--<hadoop.version>2.3.0-cdh5.1.0</hadoop.version>-->
+    <hadoop.version>2.7.2</hadoop.version>
+    <!--<hadoop.mr.version>2.3.0-cdh5.1.0</hadoop.mr.version>-->
+    <hadoop.mr.version>2.7.2</hadoop.mr.version>
     <zookeeper.version>3.4.5</zookeeper.version>
-    <!--<accumulo.version>1.4.4-cdh4.5.0</accumulo.version> -->
-    <accumulo.version>1.6.0-cdh5.1.0</accumulo.version>
-    <scala.version>2.10.3</scala.version>
+    <accumulo.version>1.6.5</accumulo.version>
+    <scala.major.version>2.10</scala.major.version>
+    <scala.minor.version>6</scala.minor.version>
+    <scala.version>${scala.major.version}.${scala.minor.version}</scala.version>
     <spark.library>spark-core_2.10</spark.library>
-    <spark.version>1.0.0</spark.version>
+    <spark.version>1.6.1</spark.version>
   </properties>
     
   <modules>
@@ -40,7 +41,20 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>scala-tools.org</id>
+      <name>Scala-tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </repository>
   </repositories>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <id>scala-tools.org</id>
+      <name>Scala-tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </pluginRepository>
+  </pluginRepositories>
   
   <dependencyManagement>
     <dependencies>
@@ -125,7 +139,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>2.9.1</version>
           <configuration>
-            <source>1.6</source>
+            <source>1.7</source>
             <keywwords>true</keywwords>
             <linksource>true</linksource>
             <show>private</show>
@@ -144,8 +158,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.1</version>
           <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
+            <source>1.7</source>
+            <target>1.7</target>
           </configuration>
         </plugin>
         <plugin>
@@ -170,6 +184,36 @@
               <phase>package</phase>
               <goals>
                 <goal>shade</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.scala-tools</groupId>
+          <artifactId>maven-scala-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>compile</goal>
+                <goal>testCompile</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.scalatest</groupId>
+          <artifactId>scalatest-maven-plugin</artifactId>
+          <version>1.0</version>
+          <configuration>
+            <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+            <junitxml>.</junitxml>
+            <filereports>MyTestSuite.txt</filereports>
+          </configuration>
+          <executions>
+            <execution>
+              <id>test</id>
+              <goals>
+                <goal>test</goal>
               </goals>
             </execution>
           </executions>
