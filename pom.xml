@@ -32,6 +32,24 @@
     
   <repositories>
     <repository>
+      <id>scala-tools.org</id>
+      <name>Scala-tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </repository>
+    <repository>
+      <id>central</id>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>sonatype</id>
+      <url>https://oss.sonatype.org/content/repositories/releases/</url>
+    </repository>
+    <repository>
+      <id>mvn-repository</id>
+      <name>Mvn Repository</name>
+      <url>http://www.mvnrepository.com</url>
+    </repository>
+    <repository>
       <id>cloudera-releases</id>
       <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
       <releases>
@@ -40,11 +58,6 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-    </repository>
-    <repository>
-      <id>scala-tools.org</id>
-      <name>Scala-tools Maven2 Repository</name>
-      <url>http://scala-tools.org/repo-releases</url>
     </repository>
   </repositories>
   
@@ -187,6 +200,18 @@
               </goals>
             </execution>
           </executions>
+          <configuration>
+            <filters>
+              <filter>
+                <artifact>*:*</artifact>
+                <excludes>
+                  <exclude>META-INF/*.SF</exclude>
+                  <exclude>META-INF/*.DSA</exclude>
+                  <exclude>META-INF/*.RSA</exclude>
+                </excludes>
+              </filter>
+            </filters>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.scala-tools</groupId>
