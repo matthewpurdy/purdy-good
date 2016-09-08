@@ -12,9 +12,10 @@
   <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>purdy-good-spark</name>
-  <url>http://maven.apache.org</url>
   
   <modules>
+    <module>purdy-good-spark-accumulo</module>
+    <!--<module>purdy-good-spark-streaming</module>-->
     <module>purdy-good-spark-mapreduce</module>
   </modules>
 
@@ -22,6 +23,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>

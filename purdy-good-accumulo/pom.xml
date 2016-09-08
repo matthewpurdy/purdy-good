@@ -11,14 +11,13 @@
   <artifactId>purdy-good-accumulo</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
-  
   <name>purdy-good-accumulo</name>
-  <url>http://maven.apache.org</url>
   
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
