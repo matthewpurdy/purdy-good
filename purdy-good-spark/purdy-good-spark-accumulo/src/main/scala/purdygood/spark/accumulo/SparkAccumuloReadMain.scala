@@ -1,7 +1,5 @@
 package purdygood.spark.accumulo
 
-import java.text.SimpleDateFormat
-
 import org.apache.accumulo.core.client.Connector
 import org.apache.accumulo.core.client.Instance
 import org.apache.accumulo.core.security.Authorizations
@@ -10,30 +8,32 @@ import org.apache.accumulo.core.client.mapreduce.AbstractInputFormat
 import org.apache.accumulo.core.client.mapreduce.InputFormatBase
 import org.apache.hadoop.mapreduce.Job
 import org.apache.spark.{SparkConf, SparkContext}
-import purdygood.spark.accumulo.client.{ClientManager, ReadClientManager, ReadClientArgs}
+
+import purdygood.common.cli.CliManager
+import purdygood.spark.accumulo.cli.{ReadCliManager, ReadCliArgs}
 import purdygood.spark.accumulo.context.AccumuloContext
 import purdygood.spark.accumulo.model.ReadRunArgs
 
-object SparkAccumuloReadRun extends App {
+object SparkAccumuloReadMain extends App {
 
   override def main(args: Array[String]) {
     val filterList: List[String] = List("global", "read")
-    val clientManager: ClientManager = new ReadClientManager(args, filterList)
+    val clientManager: CliManager = new ReadCliManager(args, filterList)
 
-    System.out.println("timestamp          => " + ReadClientArgs.timestamp)
-    System.out.println("jobType            => " + ReadClientArgs.jobType)
-    System.out.println("accumuloInstance   => " + ReadClientArgs.accumuloInstanceName)
-    System.out.println("accumuloZookeepers => " + ReadClientArgs.accumuloZookeepers)
-    System.out.println("accumuloUsername   => " + ReadClientArgs.accumuloUsername)
-    System.out.println("accumuloPassword   => " + ReadClientArgs.accumuloPassword)
-    System.out.println("inputTableName     => " + ReadClientArgs.inputTableName)
+    System.out.println("timestamp          => " + ReadCliArgs.timestamp)
+    System.out.println("jobType            => " + ReadCliArgs.jobType)
+    System.out.println("accumuloInstance   => " + ReadCliArgs.accumuloInstanceName)
+    System.out.println("accumuloZookeepers => " + ReadCliArgs.accumuloZookeepers)
+    System.out.println("accumuloUsername   => " + ReadCliArgs.accumuloUsername)
+    System.out.println("accumuloPassword   => " + ReadCliArgs.accumuloPassword)
+    System.out.println("inputTableName     => " + ReadCliArgs.inputTableName)
 
-    val readRunArgs: ReadRunArgs = ReadRunArgs(ReadClientArgs.timestamp, ReadClientArgs.jobType,
-                                               new AccumuloContext(ReadClientArgs.accumuloInstanceName,
-                                                                   ReadClientArgs.accumuloZookeepers,
-                                                                   ReadClientArgs.accumuloUsername,
-                                                                   ReadClientArgs.accumuloPassword),
-                                               ReadClientArgs.inputTableName)
+    val readRunArgs: ReadRunArgs = ReadRunArgs(ReadCliArgs.timestamp, ReadCliArgs.jobType,
+                                               new AccumuloContext(ReadCliArgs.accumuloInstanceName,
+                                                                   ReadCliArgs.accumuloZookeepers,
+                                                                   ReadCliArgs.accumuloUsername,
+                                                                   ReadCliArgs.accumuloPassword),
+                                               ReadCliArgs.inputTableName)
 
     val timestamp = readRunArgs.timestamp
     val jobName = "myspark-read-" + timestamp;

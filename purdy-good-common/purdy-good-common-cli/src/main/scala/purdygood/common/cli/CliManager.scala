@@ -1,10 +1,10 @@
-package purdygood.spark.accumulo.client
+package purdygood.common.cli
 
 import org.kohsuke.args4j.CmdLineParser
 import scala.collection.JavaConversions._
 import scala.io.Source
 
-abstract class ClientManager() {
+abstract class CliManager() {
 
   val timestampParameter: String = "--timestamp"
   val configFilepathParameter: String = "--config.filepath"

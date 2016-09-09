@@ -1,8 +1,8 @@
-package purdygood.spark.accumulo.client
+package purdygood.spark.accumulo.cli
 
 import org.kohsuke.args4j.Option
 
-object ReadClientArgs {
+object WriteCliArgs {
 
   @Option(name = "--timestamp", required = true, usage = "14 numeric timestamp; e.g. 20010203040506")
   var timestamp: String = null
@@ -25,7 +25,7 @@ object ReadClientArgs {
   @Option(name = "--accumulo.password", required = true, usage = "accumulo password")
   var accumuloPassword: String = null
 
-  @Option(name = "--input.table.name", required = true, usage = "accumulo input table name")
-  var inputTableName: String = null
+  @Option(name = "--output.table.name", required = true, usage = "accumulo output table name")
+  var outputTableName: String = null
 
 }

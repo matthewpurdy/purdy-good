@@ -3,14 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>purdy-good-spark</groupId>
-    <artifactId>purdy-good-spark</artifactId>
+    <groupId>purdy-good-common</groupId>
+    <artifactId>purdy-good-common</artifactId>
     <version>1.0.0</version>
   </parent>
-  <groupId>purdy-good-spark</groupId>
-  <artifactId>purdy-good-spark-accumulo</artifactId>
+  <groupId>purdy-good-common</groupId>
+  <artifactId>purdy-good-common-cli</artifactId>
   <version>1.0.0</version>
-  <name>purdy-good-spark-accumulo</name>
+  <name>purdy-good-common-cli</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -25,21 +25,16 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-      </plugin>
     </plugins> 
   </build>
   <dependencies>
-    <dependency>
-      <groupId>purdy-good-common</groupId>
-      <artifactId>purdy-good-common-cli</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.kohsuke.args4j</groupId>
       <artifactId>args4j-maven-plugin</artifactId>
     </dependency>
   </dependencies>
+
 </project>
+
+
 

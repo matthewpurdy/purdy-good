@@ -1,7 +1,5 @@
 package purdygood.spark.accumulo
 
-import java.text.SimpleDateFormat
-
 import org.apache.accumulo.core.client.{Connector, Instance}
 import org.apache.accumulo.core.data.{Key, Value}
 import org.apache.accumulo.core.security.Authorizations
@@ -13,30 +11,32 @@ import org.apache.hadoop.io.Text
 import org.apache.hadoop.mapreduce.Job
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd._
-import purdygood.spark.accumulo.client.{ClientManager, WriteClientManager, WriteClientArgs}
+
+import purdygood.common.cli.CliManager
+import purdygood.spark.accumulo.cli.{WriteCliManager, WriteCliArgs}
 import purdygood.spark.accumulo.context.AccumuloContext
 import purdygood.spark.accumulo.model.WriteRunArgs
 
-object SparkAccumuloWriteRun extends App {
+object SparkAccumuloWriteMain extends App {
 
   override def main(args: Array[String]) {
     val filterList: List[String] = List("global", "write")
-    val clientManager: ClientManager = new WriteClientManager(args, filterList)
+    val clientManager: CliManager = new WriteCliManager(args, filterList)
 
-    System.out.println("timestamp          => " + WriteClientArgs.timestamp)
-    System.out.println("jobType            => " + WriteClientArgs.jobType)
-    System.out.println("accumuloInstance   => " + WriteClientArgs.accumuloInstanceName)
-    System.out.println("accumuloZookeepers => " + WriteClientArgs.accumuloZookeepers)
-    System.out.println("accumuloUsername   => " + WriteClientArgs.accumuloUsername)
-    System.out.println("accumuloPassword   => " + WriteClientArgs.accumuloPassword)
-    System.out.println("outputTableName    => " + WriteClientArgs.outputTableName)
+    System.out.println("timestamp          => " + WriteCliArgs.timestamp)
+    System.out.println("jobType            => " + WriteCliArgs.jobType)
+    System.out.println("accumuloInstance   => " + WriteCliArgs.accumuloInstanceName)
+    System.out.println("accumuloZookeepers => " + WriteCliArgs.accumuloZookeepers)
+    System.out.println("accumuloUsername   => " + WriteCliArgs.accumuloUsername)
+    System.out.println("accumuloPassword   => " + WriteCliArgs.accumuloPassword)
+    System.out.println("outputTableName    => " + WriteCliArgs.outputTableName)
 
-    val writeRunArgs: WriteRunArgs = WriteRunArgs(WriteClientArgs.timestamp, WriteClientArgs.jobType,
-                                                  new AccumuloContext(WriteClientArgs.accumuloInstanceName,
-                                                                      WriteClientArgs.accumuloZookeepers,
-                                                                      WriteClientArgs.accumuloUsername,
-                                                                      WriteClientArgs.accumuloPassword),
-                                                  WriteClientArgs.outputTableName)
+    val writeRunArgs: WriteRunArgs = WriteRunArgs(WriteCliArgs.timestamp, WriteCliArgs.jobType,
+                                                  new AccumuloContext(WriteCliArgs.accumuloInstanceName,
+                                                                      WriteCliArgs.accumuloZookeepers,
+                                                                      WriteCliArgs.accumuloUsername,
+                                                                      WriteCliArgs.accumuloPassword),
+                                                  WriteCliArgs.outputTableName)
 
     val timestamp = writeRunArgs.timestamp
     val jobName = "myspark-read-" + timestamp;
