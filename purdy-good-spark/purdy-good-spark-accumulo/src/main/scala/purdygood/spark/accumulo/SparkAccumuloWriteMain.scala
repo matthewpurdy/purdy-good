@@ -53,21 +53,6 @@ object SparkAccumuloWriteMain extends App {
     val connector: Connector = writeRunArgs.accumuloContext.connector
     val auths = new Authorizations("public")
     val tableName = writeRunArgs.outputTable
-    //val timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date);
-    //val jobName = "myspark-write-" + timestamp;
-    //val sc = new SparkContext(new SparkConf().setAppName(jobName))
-    
-    //val instanceName  = "instance"
-    //val zookeepers = "localhost:2181"
-    //val principal = "root"
-    //val principalPasswd = "toor"
-    //val token = new PasswordToken(principalPasswd)
-    //val instance: Instance = new ZooKeeperInstance(instanceName, zookeepers)
-    //val connector: Connector = instance.getConnector(principal, token)
-    //val auths = new Authorizations("public")
-    //val tableName = "mytable2"
-    //val conf = sc.hadoopConfiguration;
-    //val job = Job.getInstance(conf);
     
     //Configure the job conf with our accumulo properties
     AccumuloOutputFormat.setConnectorInfo(job, principal, token)
